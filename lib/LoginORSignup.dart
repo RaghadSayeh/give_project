@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'LoginPage.dart';
 
 class LoginORSignup extends StatefulWidget {
   LoginORSignupState createState() => LoginORSignupState();
@@ -56,6 +57,10 @@ class LoginORSignupState extends State<LoginORSignup> {
               child: RaisedButton(
                   onPressed: () {
                     print("تسجيل الدخول");
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new LoginPage()));
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
