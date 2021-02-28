@@ -15,15 +15,21 @@ class LoginORSignupState extends State<LoginORSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.cyan[200],
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.cyan[200], Colors.tealAccent[400]]),
+        ),
+        // color: Color.alphaBlend(Colors.cyan[200], Colors.tealAccent[400]),
         // margin: EdgeInsets.all(6.0),
         padding: EdgeInsets.all(6.0),
         child: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
-            //  width: 80,
-            height: 100,
+            width: 120,
+            height: 130,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
             ),
@@ -55,13 +61,16 @@ class LoginORSignupState extends State<LoginORSignup> {
               },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25.0),
-                  side: BorderSide(color: Colors.tealAccent[400])),
+                  side: BorderSide(
+                      color: Color.alphaBlend(
+                          Colors.cyan[200], Colors.tealAccent[400]))),
               color: Colors.white,
               child: new Text(
                 "إنشاء حساب",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.cyan[200],
+                    color: Color.alphaBlend(
+                        Colors.cyan[200], Colors.tealAccent[400]),
                     fontSize: 19.0),
               ),
             ),
