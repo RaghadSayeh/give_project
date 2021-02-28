@@ -12,25 +12,11 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     backgroundColor: Colors.cyan[200],
-    //     title: Text('تسجيل الدخول'),
-    //   ),
-    //   body: Container(
-    //     child: Column(
-    //       children: [
-
-    //       ],
-    //     ),
-    //   ),
-    // );
-
     final emailField = TextField(
       obscureText: false,
       style: TextStyle(fontSize: 20.0),
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           hintText: "اسم المستخدم",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -39,7 +25,7 @@ class LoginPageState extends State<LoginPage> {
       obscureText: true,
       style: TextStyle(fontSize: 20.0),
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           hintText: "كلمة المرور",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
@@ -47,7 +33,8 @@ class LoginPageState extends State<LoginPage> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.cyan[200],
+      // color: Colors.cyan[200],
+      color: Color.alphaBlend(Colors.cyan[200], Colors.tealAccent[400]),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -60,6 +47,13 @@ class LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor:
+              Color.alphaBlend(Colors.cyan[200], Colors.tealAccent[400]),
+          title: Directionality(
+            child: Text('تسجيل الدخول'),
+            textDirection: TextDirection.ltr,
+          )),
       body: Center(
         child: Container(
           color: Colors.white,
