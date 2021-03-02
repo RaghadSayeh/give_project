@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'LoginORSignup.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(MyApp());
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  //   .then((_) {
+  runApp(new MyApp());
+  // });
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          hintColor: Colors.cyan[200],
+          primaryColor: Colors.cyan[300],
+          canvasColor: Colors.transparent),
       home: SplashScreen(),
     );
   }
@@ -39,15 +45,20 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.cyan[200], Colors.tealAccent[400]])),
+      color: Colors.cyan[300],
+      // decoration: BoxDecoration(
+      //     gradient: LinearGradient(
+      //         begin: Alignment.topLeft,
+      //         end: Alignment.bottomRight,
+      //         colors: [Colors.cyan[200], Colors.tealAccent[400]])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
-          child: Image.asset("assets/images/background_logo.jpg"),
+          child: Container(
+            child: Image.asset(
+              "assets/images/logo.png",
+            ),
+          ),
         ),
       ),
     );

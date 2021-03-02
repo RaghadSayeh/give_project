@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_text/gradient_text.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPageState createState() => LoginPageState();
@@ -47,6 +48,7 @@ class LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
           backgroundColor:
               Color.alphaBlend(Colors.cyan[200], Colors.tealAccent[400]),
@@ -64,12 +66,27 @@ class LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/images/background_logo.jpg",
-                    fit: BoxFit.contain,
-                  ),
-                ),
+                    height: 150.0,
+                    child: Center(
+                      child: Container(
+                          padding: EdgeInsets.only(top: 4, bottom: 4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.cyan[200],
+                                  Colors.tealAccent[400]
+                                ]),
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              "assets/images/logo.png",
+                              fit: BoxFit.contain,
+                            ),
+                          )),
+                    )),
                 SizedBox(height: 45.0),
                 emailField,
                 SizedBox(height: 25.0),
