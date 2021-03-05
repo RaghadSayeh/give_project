@@ -3,6 +3,7 @@ import 'clipper.dart';
 import 'registerFirstType.dart';
 import 'registerSecondType.dart';
 import 'registerThirdType.dart';
+import 'LoginPage.dart';
 
 class LoginORSignup extends StatefulWidget {
   @override
@@ -19,16 +20,16 @@ class LoginORSignupState extends State<LoginORSignup> {
   String _displayName;
   bool _obsecure = false;
 
+  String logintype;
+  @override
+  void initState() {
+    super.initState();
+    print("LoginOrSignup page");
+  }
+
   @override
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
-
-    @override
-    void initState() {
-      super.initState();
-      print("LoginOrSignup page");
-    }
-
     //GO logo widget
     Widget logo() {
       return Padding(
@@ -176,6 +177,12 @@ class LoginORSignupState extends State<LoginORSignup> {
               builder: (context) => new SecondTypeRegistration()));
     }
 
+    void goToLogin() {
+      //FirstTypeRegistration
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => new LoginPage()));
+    }
+
     void _registerUser2() {
       //FirstTypeRegistration
       Navigator.push(context,
@@ -262,6 +269,55 @@ class LoginORSignupState extends State<LoginORSignup> {
                           padding: EdgeInsets.only(bottom: 15),
                           child: _input(Icon(Icons.lock), "كلمة المرور",
                               _passwordController, true),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 15,
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              left: 60,
+                            ),
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 2.0,
+                                    style: BorderStyle.solid,
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: new DropdownButton<String>(
+                                value: logintype,
+                                dropdownColor: Colors.white,
+                                //         isExpanded: true,
+                                items: <String>[
+                                  'متبرع',
+                                  'بائع',
+                                  'مسؤول دار أيتام'
+                                ].map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(
+                                      value,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 20.0),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (valueType) {
+                                  setState(() {
+                                    logintype = valueType;
+                                  });
+                                  print("drop down list changed");
+                                  print(valueType);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
@@ -456,7 +512,7 @@ class LoginORSignupState extends State<LoginORSignup> {
             Padding(
               child: Container(
                 child: _button("دخول", primary, Colors.white, Colors.white,
-                    primary, _loginSheet),
+                    primary, goToLogin),
                 height: 50,
               ),
               padding: EdgeInsets.only(top: 80, left: 20, right: 20),
@@ -481,7 +537,8 @@ class LoginORSignupState extends State<LoginORSignup> {
                         fontSize: 20),
                   ),
                   onPressed: () {
-                    _registerSheet();
+                    _registerUser1();
+                    // _registerSheet();
                   },
                 ),
                 height: 50,
