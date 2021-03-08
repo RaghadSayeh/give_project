@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'HomePageSeller.dart';
+import 'SellType.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPageState createState() => LoginPageState();
@@ -13,15 +15,90 @@ class LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  TextEditingController _nameController = new TextEditingController();
-  String _email;
-  String _password;
-  String _displayName;
-  bool _obsecure = false;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future getData(String username, String password, String logintype) async {
+    var url = 'https://relative-limp.000webhostapp.com/get.php';
+    print("the data is");
+
+    if (logintype == 'بائع') {
+      logintype = 'Seller';
+    } else if (logintype == 'مسؤول دار أيتام') {
+      logintype = 'Responsible';
+    } else {
+      logintype = 'Giver';
+    }
+
+    print(username);
+    print(password);
+    print(logintype);
+
+    var response = await http.post(url, body: {
+      "username": username,
+      "password": password,
+      "logintype": logintype
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+    final ss = res['sellertype'];
+    print(ss);
+    if (res == 'Login Failed') {
+      print("must go to seller page");
+      showAlertDialog(context);
+    } else {
+      sellType.sell_type = ss.toString();
+      print("from static dta");
+      print(sellType.sell_type);
+
+      //just temporarily because eacy logintype has its specific view
+      //this home page for seller
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => new HomePageSeller()));
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "المعلومات غير صحيحة",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("الرجاء التأكد من المعلومات التي تم إدخالها"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   //input widget
@@ -87,20 +164,17 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _loginUser() {
-    _email = _usernameController.text;
-    _password = _passwordController.text;
-    _usernameController.clear();
-    _passwordController.clear();
-    //HomePageSeller
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => new HomePageSeller()));
+    // _usernameController.clear();
+    // _passwordController.clear();
+    getData(_usernameController.text.trim(), _passwordController.text.trim(),
+        logintype);
   }
 
   @override
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      //  resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(

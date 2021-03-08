@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'LoginORSignup.dart';
 
 class SecondTypeRegistration extends StatefulWidget {
   _SecondTypeRegistrationState createState() => _SecondTypeRegistrationState();
@@ -23,10 +26,116 @@ class _SecondTypeRegistrationState extends State<SecondTypeRegistration> {
     super.initState();
   }
 
+  Future registerNewGiver(
+      String username, String password, String city, String mobileNo) async {
+    var url = 'https://relative-limp.000webhostapp.com/db.php';
+    print("the data is");
+
+    print(username);
+    print(password);
+    print(city);
+    print(mobileNo);
+
+    var response = await http.post(url, body: {
+      "username": username,
+      "password": password,
+      "city": city,
+      "mobilenum": mobileNo
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'Registered Successfully') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => new LoginORSignup()));
+    } else {
+      showAlertDialog1(context);
+    }
+  }
+
+  showAlertDialog1(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+        //  textAlign: TextAlign.justify,
+        //  textDirection: TextDirection.ltr,
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "خطأ في التسجيل",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("حدثت مشكلة أثناء عملية التسجيل الرجاء المحاولة مجددا"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+        //  textAlign: TextAlign.justify,
+        //  textDirection: TextDirection.ltr,
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "المعلومات غير مكتملة",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("الرجاء التأكد من إدخال جميع المعلومات المطلوبة"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -95,6 +204,15 @@ class _SecondTypeRegistrationState extends State<SecondTypeRegistration> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 12, top: 20),
+                        child: Center(
+                          child: new Text(
+                            "الرجاء إدخال المعلومات المطلوبة باللغة الانجليزية",
+                            style: TextStyle(color: primary),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12, top: 20),
                         child: _input(Icon(Icons.person), "اسم المستخدم",
                             _usernameController, false),
                       ),
@@ -106,7 +224,7 @@ class _SecondTypeRegistrationState extends State<SecondTypeRegistration> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 12),
                         child: _input(Icon(Icons.confirmation_num),
-                            "رقم الهاتف المحمول", _mobileNoController, true),
+                            "رقم الهاتف المحمول", _mobileNoController, false),
                       ),
                       // Padding(
                       //   padding: EdgeInsets.only(bottom: 12),
@@ -116,7 +234,7 @@ class _SecondTypeRegistrationState extends State<SecondTypeRegistration> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 12),
                         child: _input(Icon(Icons.location_city), "المدينة",
-                            _cityController, true),
+                            _cityController, false),
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: 12),
@@ -196,10 +314,15 @@ class _SecondTypeRegistrationState extends State<SecondTypeRegistration> {
   }
 
   void _loginUser() {
-    _email = _usernameController.text;
-    _password = _passwordController.text;
-    _usernameController.clear();
-    _passwordController.clear();
+    if (_usernameController.text == '' ||
+        _passwordController.text == '' ||
+        _cityController.text == '' ||
+        _mobileNoController.text == '') {
+      showAlertDialog(context);
+    } else {
+      registerNewGiver(_usernameController.text, _passwordController.text,
+          _cityController.text, _mobileNoController.text);
+    }
   }
 
   Widget _button(String text, Color splashColor, Color highlightColor,

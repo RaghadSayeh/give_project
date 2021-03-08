@@ -14,7 +14,7 @@ class SignupTypesState extends State<SignupTypes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      //   resizeToAvoidBottomPadding: false,
       body: Container(
         // color: Colors.white,
         decoration: BoxDecoration(

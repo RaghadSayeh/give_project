@@ -4,6 +4,8 @@ import 'registerFirstType.dart';
 import 'registerSecondType.dart';
 import 'registerThirdType.dart';
 import 'LoginPage.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginORSignup extends StatefulWidget {
   @override
@@ -25,6 +27,7 @@ class LoginORSignupState extends State<LoginORSignup> {
   void initState() {
     super.initState();
     print("LoginOrSignup page");
+    //  getData();
   }
 
   @override
@@ -503,7 +506,7 @@ class LoginORSignupState extends State<LoginORSignup> {
     }
 
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //  resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
         backgroundColor: Theme.of(context).primaryColor,
         body: Column(
