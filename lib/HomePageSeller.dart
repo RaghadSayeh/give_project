@@ -56,6 +56,7 @@ class HomePageSellerState extends State<HomePageSeller> {
   @override
   void initState() {
     super.initState();
+    print("test homepage");
   }
 
   @override
