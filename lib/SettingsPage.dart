@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:give_project/ProfilePage.dart';
 import 'LoginORSignup.dart';
 import 'NotificationPage.dart';
 import 'HomePageSeller.dart';
+import 'addNewGood.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPageState createState() => SettingsPageState();
@@ -44,20 +46,36 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               ListTile(
                 trailing: Icon(Icons.add),
-                title: Text(
-                  'إضافة سلعة جديدة',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new AddNewGood()));
+                  },
+                  child: Text(
+                    'إضافة سلعة جديدة',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
               ListTile(
                 trailing: Icon(Icons.update),
-                title: Text(
-                  'تعديل الملف الخاص',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new ProfilePage()));
+                  },
+                  child: Text(
+                    'تعديل الملف الخاص',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
               ListTile(
