@@ -6,6 +6,11 @@ import 'LoginORSignup.dart';
 import 'HomePageSeller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'dart:core';
+import 'package:http/http.dart' as http;
+import 'SellType.dart';
 
 class AddNewGood extends StatefulWidget {
   _AddNewGoodState createState() => _AddNewGoodState();
@@ -17,6 +22,8 @@ class _AddNewGoodState extends State<AddNewGood> {
   TextEditingController quantityCont = TextEditingController();
   TextEditingController nameCont = TextEditingController();
   TextEditingController priceCont = TextEditingController();
+
+  String base64Image = "";
 
   @override
   void initState() {
@@ -79,6 +86,8 @@ class _AddNewGoodState extends State<AddNewGood> {
       print("image from camera");
       _image = image;
       print(_image);
+      print(_image.uri);
+      print(_image.path);
     });
   }
 
@@ -89,12 +98,76 @@ class _AddNewGoodState extends State<AddNewGood> {
     setState(() {
       print("image from gallery");
       _image = image;
-      print(_image);
     });
   }
 
-  void addNewItem() {
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "تمت الاضافة بنجاح",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("تمت إضافة السلعة الجديدة إلى قائمة سلعك بنجاح"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void addNewItem(String quantity, String name, String price) async {
+    //we need price and quantity in the future for goods detail page
+
     print("add new item api");
+    var url = 'https://relative-limp.000webhostapp.com/addNewGoods.php';
+
+    List<int> imageBytes = _image.readAsBytesSync();
+    base64Image = base64Encode(imageBytes);
+    //print(base64Image);
+    print(base64Image.length);
+    print(base64Image);
+    print(name);
+
+    var response = await http.post(url, body: {
+      "username": sellType.seller_id,
+      "pic": base64Image,
+      "goodsname": name
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'New goods added Successfully') {
+      print("new ggods added successfully");
+      showAlertDialog(context);
+    } else {
+      print("failed to add new goods");
+    }
   }
 
   @override
@@ -356,7 +429,8 @@ class _AddNewGoodState extends State<AddNewGood> {
                           fontSize: 20),
                     ),
                     onPressed: () {
-                      addNewItem();
+                      addNewItem(
+                          quantityCont.text, nameCont.text, priceCont.text);
                     },
                   ),
                 )

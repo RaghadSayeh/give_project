@@ -49,17 +49,28 @@ class LoginPageState extends State<LoginPage> {
 
     final res = json.decode(response.body);
     final ss = res['sellertype'];
+    final city = res['city'];
+    final otherinfo = res['otherinfo'];
+    final phoneno = res['phoneno'];
     print(ss);
+    print(city);
+    print(otherinfo);
+    print(phoneno);
+
     if (res == 'Login Failed') {
       print("must go to seller page");
       showAlertDialog(context);
     } else {
       sellType.sell_type = ss.toString();
+      sellType.seller_id = username;
+      sellType.seller_pass = password;
+      sellType.city = city;
+      sellType.otherinfo = otherinfo;
+      sellType.phoneno = phoneno;
+
       print("from static dta");
       print(sellType.sell_type);
 
-      //just temporarily because eacy logintype has its specific view
-      //this home page for seller
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => new HomePageSeller()));
     }
@@ -174,7 +185,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
     return Scaffold(
-      //  resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(

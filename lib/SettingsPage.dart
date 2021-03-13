@@ -98,11 +98,19 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               ListTile(
                 trailing: Icon(Icons.logout),
-                title: Text(
-                  'تسجيل الخروج',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new LoginORSignup()));
+                  },
+                  child: Text(
+                    'تسجيل الخروج',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
             ],

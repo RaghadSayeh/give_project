@@ -3,20 +3,102 @@ import 'NotificationPage.dart';
 import 'SettingsPage.dart';
 import 'LoginORSignup.dart';
 import 'HomePageSeller.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'SellType.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController typeCont = TextEditingController();
-  TextEditingController cityCont = TextEditingController();
-  TextEditingController phoneCont = TextEditingController();
-  TextEditingController otherCont = TextEditingController();
+  TextEditingController phoneCont =
+      TextEditingController(text: sellType.phoneno);
+  TextEditingController cityCont = TextEditingController(text: sellType.city);
+  TextEditingController passCont =
+      TextEditingController(text: sellType.seller_pass);
+  TextEditingController otherCont =
+      TextEditingController(text: sellType.otherinfo);
 
   @override
   void initState() {
     super.initState();
+    print("profile info initState");
+    print(phoneCont.text);
+    print(cityCont.text);
+    print(otherCont.text);
+    print(passCont.text);
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "نجاح التحديث",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("تم تحديث معلوماتك بنجاح"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void updateMyInfo(
+      String pass, String phoneno, String city, String other) async {
+    var url = 'https://relative-limp.000webhostapp.com/updateSellerInfo.php';
+    print("the data is update my info");
+    print(pass);
+    print(phoneno);
+    print(city);
+    print(other);
+    sellType.city = city == '' ? sellType.city : city;
+    sellType.otherinfo = other == '' ? sellType.otherinfo : other;
+    sellType.phoneno = phoneno == '' ? sellType.phoneno : phoneno;
+    sellType.seller_pass = pass == '' ? sellType.seller_pass : pass;
+
+    var response = await http.post(url, body: {
+      "username": sellType.seller_id,
+      "password": sellType.seller_pass,
+      "city": sellType.city,
+      "phoneno": sellType.phoneno,
+      "otherinfo": sellType.otherinfo
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'Update info success') {
+      print("must go to seller page");
+      showAlertDialog(context);
+    } else {
+      print("from static dta");
+    }
   }
 
   Widget profileView() {
@@ -90,9 +172,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: typeCont,
+                        //  readOnly: true,
+                        controller: phoneCont,
                         decoration: InputDecoration(
-                            hintText: 'نوع السلعة',
+                            hintText: 'رقم الهاتف',
                             border: InputBorder.none,
                             hintStyle: TextStyle(color: Colors.white)),
                         //  hintText:
@@ -142,9 +225,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        controller: phoneCont,
+                        obscureText: true,
+                        controller: passCont,
                         decoration: InputDecoration(
-                            hintText: 'رفم الهاتف',
+                            hintText: 'كلمة المرور',
                             border: InputBorder.none,
                             hintStyle: TextStyle(color: Colors.white)),
                         //  hintText:
@@ -188,22 +272,28 @@ class _ProfilePageState extends State<ProfilePage> {
               Expanded(
                 child: Align(
                   alignment: Alignment.center,
-                  child: Container(
-                    height: 50,
-                    width: 200,
-                    child: Align(
-                      child: Text(
-                        'تحديث',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      updateMyInfo(passCont.text, phoneCont.text, cityCont.text,
+                          otherCont.text);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 200,
+                      child: Align(
+                        child: Text(
+                          'تحديث',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 20),
+                        ),
                       ),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          )),
                     ),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        )),
                   ),
                 ),
               )
