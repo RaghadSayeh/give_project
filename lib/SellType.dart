@@ -5,4 +5,5 @@ class sellType {
   static String city = "";
   static String phoneno = "";
   static String otherinfo = "";
+  static String goodsName = "";
 }

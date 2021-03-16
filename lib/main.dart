@@ -3,10 +3,7 @@ import 'LoginORSignup.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-  //   .then((_) {
   runApp(new MyApp());
-  // });
 }
 
 class MyApp extends StatelessWidget {
@@ -46,11 +43,6 @@ class SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.cyan[300],
-      // decoration: BoxDecoration(
-      //     gradient: LinearGradient(
-      //         begin: Alignment.topLeft,
-      //         end: Alignment.bottomRight,
-      //         colors: [Colors.cyan[200], Colors.tealAccent[400]])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(

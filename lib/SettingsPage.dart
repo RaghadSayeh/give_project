@@ -4,6 +4,9 @@ import 'LoginORSignup.dart';
 import 'NotificationPage.dart';
 import 'HomePageSeller.dart';
 import 'addNewGood.dart';
+import 'GiverOrdersTrack.dart';
+import 'ContactUs.dart';
+import 'GiverOrders.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPageState createState() => SettingsPageState();
@@ -37,11 +40,19 @@ class SettingsPageState extends State<SettingsPage> {
               ListTile(
                 // trailing: ,
                 trailing: Icon(Icons.track_changes),
-                title: Text(
-                  'متابعة طلبات المتبرعين',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new GiverOrdersTrack()));
+                  },
+                  child: Text(
+                    'متابعة طلبات المتبرعين',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
               ListTile(
@@ -79,21 +90,49 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               ListTile(
+                trailing: Icon(Icons.contact_page),
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new GiverOrders()));
+                  },
+                  child: Text(
+                    'أرشيف الطلبات',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ),
+              ),
+              ListTile(
                 trailing: Icon(Icons.edit_attributes),
-                title: Text(
-                  'تفاصيل السلع',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    'تفاصيل السلع',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
               ListTile(
                 trailing: Icon(Icons.contact_page),
-                title: Text(
-                  'تواصل معنا',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.justify,
-                  textDirection: TextDirection.rtl,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => new ContactUs()));
+                  },
+                  child: Text(
+                    'تواصل معنا',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.justify,
+                    textDirection: TextDirection.rtl,
+                  ),
                 ),
               ),
               ListTile(

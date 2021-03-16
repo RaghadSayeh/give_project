@@ -32,6 +32,10 @@ dependencies:
   http: ^0.12.1
   image_picker: ^0.6.7+17
   flutter_image_compress: ^0.7.0
+  simple_animations: ^2.5.1
+  google_fonts: ^1.1.2
+
+
 
 
   
