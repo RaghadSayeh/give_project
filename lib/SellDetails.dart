@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'clipper.dart';
 import 'LoginORSignup.dart';
 import 'SellType.dart';
 import 'NotificationPage.dart';
@@ -8,10 +7,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'GoodsData.dart';
 import 'GoodsList.dart';
-import 'dart:typed_data';
 import 'GoodsSellList.dart';
 import 'SellData.dart';
 import 'HomePageSeller.dart';
+import 'SellType.dart';
+import 'dart:io';
+import 'addnewGoodDetails.dart';
 
 class SellDetails extends StatefulWidget {
   @override
@@ -19,47 +20,9 @@ class SellDetails extends StatefulWidget {
 }
 
 class SellDetailsState extends State<SellDetails> {
-  List<String> images = [
-    '111.jpg',
-    '123.jpg',
-    '108.jpg',
-    '126.jpg',
-    '120.jpg',
-    '119.jpg',
-    '121.jpg',
-    '107.jpg'
-  ];
-  List<String> names = [
-    'بجامات',
-    'فساتين ',
-    'بلايز بنات',
-    'حجابات',
-    'أحذية أطفال',
-    'أحذية بنات',
-    'أحذية أولاد',
-    'بناطلين'
-  ];
-
-  List<String> images1 = [
-    '77.jpg',
-    '67.jpg',
-    '64.jpg',
-    '70.jpg',
-    '71.jpg',
-    '69.jpg',
-    '73.jpg',
-    '74.jpg',
-  ];
-  List<String> names1 = [
-    'منظفات',
-    'خضار',
-    'فواكه',
-    'دجاج',
-    'لحوم',
-    'معلبات',
-    'تسالي',
-    'أجبان وألبان',
-  ];
+  String newprice = "";
+  String newquan = "";
+  String newexplan = "";
 
   Future getMainGoods() async {
     GoodsSellList.list = new List();
@@ -93,6 +56,8 @@ class SellDetailsState extends State<SellDetails> {
         print(quantity);
         print(explanation);
         print(picnum);
+        print("length is");
+        print(picnum.length);
 
         SellData gd = new SellData();
         gd.price = price;
@@ -106,7 +71,223 @@ class SellDetailsState extends State<SellDetails> {
     }
   }
 
-  void deleteitem() async {}
+  Future<void> _editform(BuildContext context, String pic, int index) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: new Container(
+              width: 260.0,
+              height: 230.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Theme.of(context).primaryColor,
+                borderRadius: new BorderRadius.all(new Radius.circular(32.0)),
+              ),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  // dialog top
+                  new Expanded(
+                    child:
+                        //    new Row(
+                        //    children: <Widget>[
+                        new Container(
+                      // padding: new EdgeInsets.all(10.0),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new Text(
+                        'يمكنك تعديل السعر, الكمية, الوصف أو جميعها',
+
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          // fontFamily: 'helvetica_neue_light',
+                        ),
+                        textAlign: TextAlign.right,
+                        // textDirection: TextDirection.rtl
+                      ),
+                    ),
+                    //  ],
+                    // ),
+                  ),
+                  new Expanded(
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new TextField(
+                        autofocus: true,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          // fontFamily: 'helvetica_neue_light',
+                        ),
+                        textAlign: TextAlign.right,
+                        //  textDecoration:TextDecoration.right
+                        decoration: InputDecoration(hintText: "الكمية الجديدة"),
+                        onChanged: (item) {
+                          newquan = item;
+                        },
+                      ),
+                    ),
+                  ),
+                  new Expanded(
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new TextField(
+                        autofocus: true,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          // fontFamily: 'helvetica_neue_light',
+                        ),
+                        textAlign: TextAlign.right,
+                        //  textDecoration:TextDecoration.right
+                        decoration: InputDecoration(hintText: "السعر الجديد"),
+                        onChanged: (item) {
+                          newprice = item;
+                        },
+                      ),
+                    ),
+                  ),
+                  new Expanded(
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new TextField(
+                        autofocus: true,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          // fontFamily: 'helvetica_neue_light',
+                        ),
+                        textAlign: TextAlign.right,
+                        //  textDecoration:TextDecoration.right
+                        decoration: InputDecoration(hintText: "الوصف الجديد"),
+                        onChanged: (item) {
+                          newexplan = item;
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    editGood(newexplan, newprice, newquan, pic, index);
+                    Navigator.pop(context);
+                  },
+                  child: Text("تم")),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("إلغاء")),
+            ],
+          );
+        });
+  }
+
+  void editGood(String explanation, String price, String quantity,
+      String picnum, int index) async {
+    var url = 'https://relative-limp.000webhostapp.com/changeGoodsInfo.php';
+    print("the data is");
+
+    var response = await http.post(url, body: {
+      "userid": sellType.seller_id,
+      "goodsname": sellType.goodsName,
+      "price": price == "" ? GoodsSellList.list[index].price : price,
+      "quantity":
+          quantity == "" ? GoodsSellList.list[index].quantity : quantity,
+      "explanation": explanation == ""
+          ? GoodsSellList.list[index].explanation
+          : explanation,
+      "picnum": picnum
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'Update goodsinfo successfully') {
+      print("Update goodsinfo successfully");
+      // showAlertDialog(context);
+      //if update done successfully then must refresh the goods in order to take new update
+      getMainGoods();
+    } else {
+      //  showAlertDialog(context);  must be for failed edit
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget okButton = FlatButton(
+      child: Text(
+        "تم",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "نجاح التحديث",
+        textAlign: TextAlign.justify,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Text("تم تحديث معلومات السلعة بنجاح"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void deleteitem(String picnum) async {
+    var url = 'https://relative-limp.000webhostapp.com/deleteselldetail.php';
+    print("the data is");
+
+    var response = await http.post(url, body: {
+      "userid": sellType.seller_id,
+      "goodsname": sellType.goodsName,
+      "picnum": picnum
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'delete details successfully') {
+      print("Update goodsinfo successfully");
+      // showAlertDialog(context);
+      //if update done successfully then must refresh the goods in order to take new update
+      getMainGoods();
+    } else {
+      //  showAlertDialog(context);  must be for failed edit
+    }
+  }
 
   void goToDetails() async {}
 
@@ -127,16 +308,34 @@ class SellDetailsState extends State<SellDetails> {
             SizedBox(
               height: 20,
             ),
+            // Container(
+            //   width: 140,
+            //   height: 120,
+            //   decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //     image: AssetImage(
+            //       "assets/images/" + GoodsSellList.list[index].picnum + ".png",
+            //     ),
+            //     fit: BoxFit.cover,
+            //   )),
+            //   child: new Text(""),
+            // ),
             Container(
-              width: 140,
-              height: 120,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    
-                      image: AssetImage("assets/images/"+GoodsSellList.list[index].picnum+".png", ),
-                      fit: BoxFit.cover,)),
-              child: new Text(""),
-            ),
+                width: MediaQuery.of(context).size.width,
+                child: new ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  child: GoodsSellList.list[index].picnum.length < 8
+                      ? Image.asset(
+                          "assets/images/" +
+                              GoodsSellList.list[index].picnum +
+                              ".png",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.memory(
+                          base64Decode(GoodsSellList.list[index].picnum),
+                          fit: BoxFit.cover,
+                        ),
+                )),
             Container(
               child: Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 0, bottom: 0),
@@ -227,7 +426,7 @@ class SellDetailsState extends State<SellDetails> {
                                   Expanded(
                                       //flex: 2,
                                       child: new Text(
-                                   GoodsSellList.list[index].quantity,
+                                    GoodsSellList.list[index].quantity,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
@@ -283,7 +482,9 @@ class SellDetailsState extends State<SellDetails> {
                                         child: GestureDetector(
                                           onTap: () {
                                             print(
-                                                "Join meeting feature will be implemented later");
+                                                "delete sell details successfully");
+                                            deleteitem(GoodsSellList
+                                                .list[index].picnum);
                                           },
                                           child: Icon(Icons.delete),
                                         )),
@@ -294,25 +495,19 @@ class SellDetailsState extends State<SellDetails> {
                                         padding:
                                             EdgeInsets.only(top: 10, bottom: 5),
                                         child: GestureDetector(
-                                          onTap: () {
-                                            print(
-                                                "Join meeting feature will be implemented later");
+                                          onTap: () async {
+                                            print("edit api");
+                                            await _editform(
+                                                context,
+                                                GoodsSellList
+                                                    .list[index].picnum,
+                                                index);
                                           },
                                           child: Icon(Icons.edit),
                                         )),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Container(
-                                        padding:
-                                            EdgeInsets.only(top: 10, bottom: 5),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            print(
-                                                "Join meeting feature will be implemented later");
-                                          },
-                                          child: Icon(Icons.add_box),
-                                        )),
                                   ],
                                 )),
                           ],
@@ -343,6 +538,43 @@ class SellDetailsState extends State<SellDetails> {
         });
   }
 
+  File _image;
+  String base64Image = "";
+  void addNewItem(
+      String quantity, String name, String price, String explanation) async {
+    //we need price and quantity in the future for goods detail page
+    print("add new item api");
+    var url = 'https://relative-limp.000webhostapp.com/addNewDetailsSell.php';
+
+    List<int> imageBytes = _image.readAsBytesSync();
+    base64Image = base64Encode(imageBytes);
+    print(base64Image.length);
+    print(base64Image);
+    print(name);
+
+    var response = await http.post(url, body: {
+      "userid": sellType.seller_id,
+      "picnum": base64Image,
+      "goodsname": sellType.goodsName,
+      "price": price,
+      "quantity": quantity,
+      "explanation": explanation
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'New goods added Successfully') {
+      print("new ggods added successfully");
+      showAlertDialog(context);
+    } else {
+      print("failed to add new goods");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -356,6 +588,19 @@ class SellDetailsState extends State<SellDetails> {
           "الصفحة الرئيسية",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        leading: GestureDetector(
+          onTap: () {
+            //addnewGoodDetails
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => new addnewGoodDetails()));
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: _buildList(),
       bottomNavigationBar: BottomNavigationBar(
@@ -363,23 +608,23 @@ class SellDetailsState extends State<SellDetails> {
         type: BottomNavigationBarType.fixed,
         currentIndex: 0,
         onTap: (value) async {
-          value ==0 ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => new HomePageSeller())) :value == 1
-              ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => new NotificationPage()))
-              : value == 2
+          value == 0
+              ? Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new HomePageSeller()))
+              : value == 1
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new SettingsPage()))
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => new LoginORSignup()));
+                          builder: (context) => new NotificationPage()))
+                  : value == 2
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new SettingsPage()))
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new LoginORSignup()));
         },
         items: [
           BottomNavigationBarItem(

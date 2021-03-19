@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'clipper.dart';
 import 'LoginORSignup.dart';
 import 'SellType.dart';
 import 'NotificationPage.dart';
@@ -8,7 +7,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'GoodsData.dart';
 import 'GoodsList.dart';
-import 'dart:typed_data';
 import 'SellDetails.dart';
 
 class HomePageSeller extends StatefulWidget {
@@ -102,8 +100,6 @@ class HomePageSellerState extends State<HomePageSeller> {
     }
   }
 
-  void deleteitem() async {}
-
   void goToDetails(String goodsName) async {
     sellType.goodsName = goodsName;
     Navigator.push(
@@ -117,11 +113,37 @@ class HomePageSellerState extends State<HomePageSeller> {
     getMainGoods();
   }
 
+  void deleteGoods(String picnum, String goodsname) async {
+    var url = 'https://relative-limp.000webhostapp.com/deleteMainGoods.php';
+    print("the data is");
+
+    var response = await http.post(url, body: {
+      "username": sellType.seller_id,
+      "goodsname": goodsname,
+      "pic": picnum
+    });
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'delete maingoods successfully') {
+      print("Update goodsinfo successfully");
+      // showAlertDialog(context);
+      //if update done successfully then must refresh the goods in order to take new update
+      getMainGoods();
+    } else {
+      //  showAlertDialog(context);  must be for failed edit
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      //  resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -134,16 +156,13 @@ class HomePageSellerState extends State<HomePageSeller> {
       body: GoodsList.gl.length == 0
           ? Center(
               child: new Text(
-              "Wait to load data...",
+              "جاري التحميل",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ))
           : Container(
               padding: EdgeInsets.only(top: 10),
               color: Colors.white,
-              child:
-                  // sellType.sell_type == 'ملابس'
-                  //     ?
-                  GridView.count(
+              child: GridView.count(
                 crossAxisCount: 2,
                 children: List.generate(GoodsList.gl.length, (index) {
                   return GestureDetector(
@@ -210,7 +229,8 @@ class HomePageSellerState extends State<HomePageSeller> {
                                     icon: new Icon(Icons.delete),
                                     color: Colors.white,
                                     onPressed: () async {
-                                      deleteitem();
+                                      deleteGoods(GoodsList.gl[index].pic,
+                                          GoodsList.gl[index].goodsname);
                                     },
                                   ),
                                 ),
@@ -223,7 +243,6 @@ class HomePageSellerState extends State<HomePageSeller> {
                                     onPressed: () async {
                                       print("person icon");
                                       setState(() {
-                                       
                                         goToDetails(
                                             GoodsList.gl[index].goodsname);
                                       });

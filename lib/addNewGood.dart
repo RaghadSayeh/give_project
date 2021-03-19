@@ -128,7 +128,6 @@ class _AddNewGoodState extends State<AddNewGood> {
       ],
     );
 
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -139,13 +138,11 @@ class _AddNewGoodState extends State<AddNewGood> {
 
   void addNewItem(String quantity, String name, String price) async {
     //we need price and quantity in the future for goods detail page
-
     print("add new item api");
     var url = 'https://relative-limp.000webhostapp.com/addNewGoods.php';
 
     List<int> imageBytes = _image.readAsBytesSync();
     base64Image = base64Encode(imageBytes);
-    //print(base64Image);
     print(base64Image.length);
     print(base64Image);
     print(name);
