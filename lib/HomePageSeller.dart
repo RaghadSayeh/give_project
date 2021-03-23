@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'GoodsData.dart';
 import 'GoodsList.dart';
 import 'SellDetails.dart';
+import 'addnewGoodDetails.dart';
+import 'dart:io';
 
 class HomePageSeller extends StatefulWidget {
   @override
@@ -139,6 +141,37 @@ class HomePageSellerState extends State<HomePageSeller> {
     }
   }
 
+  Future<void> askfordelete(
+      BuildContext context, String pic, String name) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: new Text(
+              'هل أنت متأكد من أنك تريد حذف هذا التصنيف؟؟؟',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.0,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    deleteGoods(pic, name);
+                    Navigator.pop(context);
+                  },
+                  child: Text("تم")),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("إلغاء")),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,7 +262,9 @@ class HomePageSellerState extends State<HomePageSeller> {
                                     icon: new Icon(Icons.delete),
                                     color: Colors.white,
                                     onPressed: () async {
-                                      deleteGoods(GoodsList.gl[index].pic,
+                                      askfordelete(
+                                          context,
+                                          GoodsList.gl[index].pic,
                                           GoodsList.gl[index].goodsname);
                                     },
                                   ),
@@ -245,6 +280,29 @@ class HomePageSellerState extends State<HomePageSeller> {
                                       setState(() {
                                         goToDetails(
                                             GoodsList.gl[index].goodsname);
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: IconButton(
+                                    icon: new Icon(Icons.add),
+                                    color: Colors.white,
+                                    onPressed: () async {
+                                      print("person icon");
+                                      setState(() {
+                                        sellType.goodsName =
+                                            GoodsList.gl[index].goodsname;
+                                        print(
+                                            "add new goods detail from home page");
+                                        print(sellType.goodsName);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    new addnewGoodDetails()));
                                       });
                                     },
                                   ),

@@ -4,6 +4,13 @@ import 'SettingsPage.dart';
 import 'LoginORSignup.dart';
 import 'HomePageSeller.dart';
 import 'background.dart';
+import 'HistoryDataList.dart';
+import 'HistotyData.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'SellType.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:slimy_card/slimy_card.dart';
 
 class GiverOrders extends StatefulWidget {
   @override
@@ -11,6 +18,9 @@ class GiverOrders extends StatefulWidget {
 }
 
 class _GiverOrdersState extends State<GiverOrders> {
+  final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardB = new GlobalKey();
+
   List<String> items = [
     "Item 1",
     "Item 2",
@@ -23,14 +33,31 @@ class _GiverOrdersState extends State<GiverOrders> {
   ];
 
   List<String> images = [
-    '124.jpg',
+    '178.jpg',
     '112.jpg',
-    '125.jpg',
+    '125.png',
     '118.jpg',
     '178.jpg',
     '119.jpg',
     '113.jpg',
-    '115.jpg'
+    '115.jpg',
+    '178.jpg',
+    '112.jpg',
+    '125.png',
+    '118.jpg',
+    '178.jpg',
+    '119.jpg',
+    '113.jpg',
+    '115.jpg',
+    '178.jpg',
+    '112.jpg',
+    '125.png',
+    '118.jpg',
+    '178.jpg',
+    '119.jpg',
+    '113.jpg',
+    '115.jpg',
+    '115.jpg',
   ];
   List<String> headers = [
     "تبرع دار أيتام جنين",
@@ -43,73 +70,170 @@ class _GiverOrdersState extends State<GiverOrders> {
     "تبرع دار أيتام رام الله"
   ];
 
+  Future<void> getHistory() async {
+    HistoryDataList.hd = new List();
+    var url = 'https://relative-limp.000webhostapp.com/getSellerHistory.php';
+    print("getHistory api:");
+
+    var response = await http.post(url, body: {"sellerid": sellType.seller_id});
+
+    print("status code is");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    final res = json.decode(response.body);
+
+    if (res == 'Failed to get seller history') {
+      print("Failed to get seller history");
+      //  showAlertDialog(context);
+    } else {
+      print("from getHistory details dta");
+
+      List<dynamic> jsonObj = res;
+      for (int i = 0; i < jsonObj.length; i++) {
+        Map<String, dynamic> doclist = jsonObj[i];
+        String giverid = doclist['giverid'];
+        String responsiblename = doclist['responsiblename'];
+        String finalprice = doclist['finalprice'];
+        String orderdate = doclist['orderdate'];
+        String orderrecievedseller = doclist['orderrecievedseller'];
+        String orderrecievedrespon = doclist['orderrecievedrespon'];
+        String goodsname = doclist['goodsname'];
+        String goodsid = doclist['goodsid'];
+        String goodsquan = doclist['goodsquan'];
+        String goodsprice = doclist['goodsprice'];
+
+        print(giverid);
+        print(responsiblename);
+        print(finalprice);
+        print(orderdate);
+        print(orderrecievedseller);
+        print(goodsname);
+        print(orderrecievedrespon);
+        print(goodsid);
+        print(goodsquan);
+        print(goodsprice);
+
+        HistoryData gd = new HistoryData();
+        gd.giverid = giverid;
+        gd.responsiblename = responsiblename;
+        gd.finalprice = finalprice;
+        gd.orderdate = orderdate;
+        gd.orderrecievedseller = orderrecievedseller;
+        gd.goodsname = goodsname;
+        gd.goodsid = goodsid;
+        gd.goodsquan = goodsquan;
+        gd.goodsprice = goodsprice;
+
+        HistoryDataList.hd.add(gd);
+      }
+      setState(() {});
+    }
+  }
+
+  Widget bottomCardWidget(String y, String x, String z) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 3),
+        Text(
+          y,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 3),
+        Text(
+          x,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 3),
+        Text(
+          z,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        )
+      ],
+    );
+  }
+
+  Widget topCardWidget(
+      String imagePath, String x, String y, String z, String n) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            image: DecorationImage(image: AssetImage(imagePath)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 15),
+        Text(
+          x,
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        SizedBox(height: 15),
+        Text(
+          y,
+          style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 12,
+              fontWeight: FontWeight.w500),
+        ),
+        SizedBox(height: 10),
+        Text(
+          z,
+          style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 12,
+              fontWeight: FontWeight.w500),
+        ),
+        SizedBox(height: 10),
+        Text(
+          n,
+          style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 12,
+              fontWeight: FontWeight.w500),
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-
-    final headerList = new ListView.builder(
-      itemBuilder: (context, index) {
-        EdgeInsets padding = index == 0
-            ? const EdgeInsets.only(
-                left: 20.0, right: 10.0, top: 4.0, bottom: 30.0)
-            : const EdgeInsets.only(
-                left: 10.0, right: 10.0, top: 4.0, bottom: 30.0);
-
-        return new Padding(
-          padding: padding,
-          child: new InkWell(
-            onTap: () {
-              print('Card selected');
-            },
-            child: new Container(
-              decoration: new BoxDecoration(
-                borderRadius: new BorderRadius.circular(10.0),
-                color: Colors.lightGreen,
-                boxShadow: [
-                  new BoxShadow(
-                      color: Colors.black.withAlpha(70),
-                      offset: const Offset(3.0, 10.0),
-                      blurRadius: 15.0)
-                ],
-                image: new DecorationImage(
-                  image: new ExactAssetImage(
-                      'assets/images/' + index.toString() + '.png'),
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              //                                    height: 200.0,
-              width: 200.0,
-              child: new Stack(
-                children: <Widget>[
-                  new Align(
-                    alignment: Alignment.bottomCenter,
-                    child: new Container(
-                        decoration: new BoxDecoration(
-                            color: const Color(0xFF273A48),
-                            borderRadius: new BorderRadius.only(
-                                bottomLeft: new Radius.circular(10.0),
-                                bottomRight: new Radius.circular(10.0))),
-                        height: 30.0,
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new Text(
-                              '${items[index % items.length]}',
-                              style: new TextStyle(color: Colors.white),
-                            )
-                          ],
-                        )),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-      scrollDirection: Axis.horizontal,
-      itemCount: items.length,
-    );
 
     final body = new Scaffold(
       appBar: new AppBar(
@@ -122,95 +246,32 @@ class _GiverOrdersState extends State<GiverOrders> {
         ),
       ),
       backgroundColor: Colors.transparent,
-      body: new Container(
-        child: new Stack(
-          children: <Widget>[
-            new Padding(
-              padding: new EdgeInsets.only(top: 10.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  new Expanded(
-                      child: ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            return new ListTile(
-                              title: new Column(
-                                children: <Widget>[
-                                  new Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      new Container(
-                                        height: 72.0,
-                                        width: 72.0,
-                                        decoration: new BoxDecoration(
-                                            color: Colors.lightGreen,
-                                            boxShadow: [
-                                              new BoxShadow(
-                                                  color: Colors.black
-                                                      .withAlpha(70),
-                                                  offset:
-                                                      const Offset(2.0, 2.0),
-                                                  blurRadius: 2.0)
-                                            ],
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(12.0)),
-                                            image: new DecorationImage(
-                                              image: new ExactAssetImage(
-                                                'assets/images/' +
-                                                    images[index],
-                                              ),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                      new SizedBox(
-                                        width: 8.0,
-                                      ),
-                                      new Expanded(
-                                          child: new Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          new Text(
-                                            headers[index].toString(),
-                                            textAlign: TextAlign.justify,
-                                            textDirection: TextDirection.rtl,
-                                            style: new TextStyle(
-                                                fontSize: 14.0,
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          new Text(
-                                            'هذا التبرع موجه من متبرع معين\nويذهب إلى دار أيتام حسب طلب المتبرع ويشمل نوع السلعة والسعر والكمية المتفق عليها لمزيد من التفاصيل يمكن الضغط هنا',
-                                            style: new TextStyle(
-                                                fontSize: 12.0,
-                                                color: Colors.black54,
-                                                fontWeight: FontWeight.normal),
-                                          )
-                                        ],
-                                      )),
-                                      // new Icon(
-                                      //   Icons.delete,
-                                      //   color: const Color(0xFF273A48),
-                                      // )
-                                    ],
-                                  ),
-                                  new Divider(),
-                                ],
-                              ),
-                            );
-                          }))
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: ListView.builder(
+          itemCount: HistoryDataList.hd.length,
+          itemBuilder: (context, index) {
+            return new Column(
+              children: [
+                SlimyCard(
+                  color: Colors.cyan[300],
+                  // In topCardWidget below, imagePath changes according to the
+                  // status of the SlimyCard(snapshot.data).
+                  topCardWidget: topCardWidget(
+                      'assets/images/' + images[index],
+                      HistoryDataList.hd[index].responsiblename,
+                      HistoryDataList.hd[index].giverid,
+                      HistoryDataList.hd[index].finalprice,
+                      HistoryDataList.hd[index].orderdate),
+                  bottomCardWidget: bottomCardWidget(
+                      HistoryDataList.hd[index].goodsname,
+                      HistoryDataList.hd[index].goodsprice,
+                      HistoryDataList.hd[index].goodsquan),
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            );
+          }),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
@@ -250,7 +311,7 @@ class _GiverOrdersState extends State<GiverOrders> {
 
     return new Container(
       decoration: new BoxDecoration(
-        color: Colors.cyan[300],
+        color: Colors.pink,
       ),
       child: new Stack(
         children: <Widget>[

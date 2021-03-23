@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'LoginORSignup.dart';
 import 'package:flutter/services.dart';
+import 'home2.dart';
 
 void main() {
   runApp(new MyApp());
@@ -33,8 +34,8 @@ class SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => new LoginORSignup()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => new AuthScreen()));
       });
     });
   }

@@ -34,6 +34,12 @@ dependencies:
   flutter_image_compress: ^0.7.0
   simple_animations: ^2.5.1
   google_fonts: ^1.1.2
+  animations: ^1.1.2
+  font_awesome_flutter: ^8.8.1
+  expansion_tile_card: ^1.0.3
+  slimy_card: ^1.0.4
+
+
 
 
 

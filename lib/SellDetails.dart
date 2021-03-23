@@ -289,7 +289,35 @@ class SellDetailsState extends State<SellDetails> {
     }
   }
 
-  void goToDetails() async {}
+  Future<void> askfordelete(BuildContext context, String pic) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: new Text(
+              'هل أنت متأكد من أنك تريد حذف هذه السلعة؟؟؟',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.0,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    deleteitem(pic);
+                    Navigator.pop(context);
+                  },
+                  child: Text("تم")),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("إلغاء")),
+            ],
+          );
+        });
+  }
 
   @override
   void initState() {
@@ -304,197 +332,185 @@ class SellDetailsState extends State<SellDetails> {
     return ListView.builder(
         itemCount: GoodsSellList.list.length,
         itemBuilder: (context, index) {
-          return Column(children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            // Container(
-            //   width: 140,
-            //   height: 120,
-            //   decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //     image: AssetImage(
-            //       "assets/images/" + GoodsSellList.list[index].picnum + ".png",
-            //     ),
-            //     fit: BoxFit.cover,
-            //   )),
-            //   child: new Text(""),
-            // ),
-            Container(
-                width: MediaQuery.of(context).size.width,
-                child: new ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  child: GoodsSellList.list[index].picnum.length < 8
-                      ? Image.asset(
-                          "assets/images/" +
-                              GoodsSellList.list[index].picnum +
-                              ".png",
-                          fit: BoxFit.cover,
-                        )
-                      : Image.memory(
-                          base64Decode(GoodsSellList.list[index].picnum),
-                          fit: BoxFit.cover,
-                        ),
-                )),
-            Container(
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 0.0, top: 0, bottom: 0),
-                  child: GestureDetector(
-                    onTap: () async {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(9.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  // Container(
-                                  //   width:
-                                  //       MediaQuery.of(context).size.width * .3,
-                                  //   child: Container(
-                                  //     //  width: 160,
-                                  //     //height: 150,
-                                  //     decoration: BoxDecoration(
-                                  //       border: Border.all(
-                                  //         color: Theme.of(context).primaryColor,
-                                  //       ),
-                                  //       //borderRadius: BorderRadius.all(Radius.circular(50))
-                                  //     ),
-                                  //     margin: EdgeInsets.fromLTRB(10, 2, 10, 5),
-                                  //     //  padding: EdgeInsets.all(2),
-                                  //     child: Image(
-                                  //       image: AssetImage('assets/33.png'),
-                                  //       fit: BoxFit.fill,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
+          return Card(
+              shape: RoundedRectangleBorder(
+                side: new BorderSide(color: Colors.cyan[300], width: 1.0),
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              //   color: Colors.pink,
+              elevation: 10,
+              clipBehavior: Clip.antiAlias,
+              child: Column(children: <Widget>[
+                // SizedBox(
+                //   height: 20,
+                // ),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: new ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      child: GoodsSellList.list[index].picnum.length < 8
+                          ? Image.asset(
+                              "assets/images/" +
+                                  GoodsSellList.list[index].picnum +
+                                  ".png",
+                              fit: BoxFit.cover,
+                            )
+                          : Image.memory(
+                              base64Decode(GoodsSellList.list[index].picnum),
+                              fit: BoxFit.cover,
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(9.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .3,
-                                      child: Text(
-                                        "السعر: ",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                  // SizedBox(
-                                  //   width: 20,
-                                  // ),
-                                  Expanded(
-                                      child: new Text(
-                                    GoodsSellList.list[index].price,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(9.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .3,
-                                    child: Text(
-                                      "الكمية: ",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                    )),
+                Container(
+                  child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 0.0, top: 0, bottom: 0),
+                      child: GestureDetector(
+                        onTap: () async {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 5),
+                                          child: new Text(
+                                            GoodsSellList.list[index].price,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 5),
+                                          child: Text(
+                                            " :السعر  ",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                    ],
                                   ),
-                                  // SizedBox(
-                                  //   width: 20,
-                                  // ),
-                                  Expanded(
-                                      //flex: 2,
-                                      child: new Text(
-                                    GoodsSellList.list[index].quantity,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(9.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .3,
-                                      child: Text(
-                                        "شرح بسيط: ",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                  // SizedBox(
-                                  //   width: 20,
-                                  // ),
-                                  Expanded(
-                                      child: new Text(
-                                    GoodsSellList.list[index].explanation,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                                padding: const EdgeInsets.all(0),
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                        padding:
-                                            EdgeInsets.only(top: 10, bottom: 5),
-                                        child: GestureDetector(
+                                Container(
+                                  // margin: const EdgeInsets.only(
+                                  //   right: 5.0,
+                                  // ),
+                                  //padding: const EdgeInsets.all(9.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      // SizedBox(
+                                      //   width: 20,
+                                      // ),
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 5),
+                                          //flex: 2,
+                                          child: new Text(
+                                            GoodsSellList.list[index].quantity,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            right: 10, bottom: 5),
+                                        child: Text(
+                                          " : الكمية  ",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  // padding: const EdgeInsets.all(9.0),
+                                  // margin: const EdgeInsets.only(
+                                  //   right: 5.0,
+                                  // ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 5),
+                                          child: new Text(
+                                            GoodsSellList
+                                                .list[index].explanation,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                              right: 10, bottom: 5),
+                                          child: Text(
+                                            " : وصف المنتج ",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                    //   padding:
+                                    //     const EdgeInsets.only(top: 3, bottom: 3),
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                            //   padding:
+                                            //     EdgeInsets.only(top: 4, bottom: 4),
+                                            child: GestureDetector(
                                           onTap: () {
                                             print(
                                                 "delete sell details successfully");
-                                            deleteitem(GoodsSellList
-                                                .list[index].picnum);
+                                            askfordelete(
+                                                context,
+                                                GoodsSellList
+                                                    .list[index].picnum);
                                           },
-                                          child: Icon(Icons.delete),
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.pink,
+                                          ),
                                         )),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        padding:
-                                            EdgeInsets.only(top: 10, bottom: 5),
-                                        child: GestureDetector(
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                            //  padding:
+                                            //    EdgeInsets.only(top: 4, bottom: 4),
+                                            child: GestureDetector(
                                           onTap: () async {
                                             print("edit api");
                                             await _editform(
@@ -503,38 +519,54 @@ class SellDetailsState extends State<SellDetails> {
                                                     .list[index].picnum,
                                                 index);
                                           },
-                                          child: Icon(Icons.edit),
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: Colors.pink,
+                                          ),
                                         )),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                  ],
-                                )),
-                          ],
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          ),
                         ),
-
-                        //       ]
-                        //         )
-                      ),
-                    ),
-                  )),
-              margin: EdgeInsets.only(top: 8, left: 10, right: 10),
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                // border: Border.all(color: Theme.of(context).primaryColor),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              color: Colors.grey,
-              width: widthsize,
-              height: 1.0,
-              margin: EdgeInsets.only(left: 0.0),
-            ),
-          ]);
+                      )),
+                  margin: EdgeInsets.only(top: 8, left: 10, right: 10),
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+                // ButtonBar(
+                //   alignment: MainAxisAlignment.start,
+                //   children: [
+                //     FlatButton(
+                //       onPressed: () {
+                //         // Perform some action
+                //       },
+                //       child: Icon(Icons.edit),
+                //     ),
+                //     FlatButton(
+                //       onPressed: () {
+                //         // Perform some action
+                //       },
+                //       child: const Text('ACTION 2'),
+                //     ),
+                //   ],
+                // ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  color: Colors.grey,
+                  width: widthsize,
+                  height: 1.0,
+                  margin: EdgeInsets.only(left: 0.0),
+                ),
+              ]));
         });
   }
 

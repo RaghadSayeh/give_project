@@ -130,7 +130,8 @@ class _addnewGoodDetailsState extends State<addnewGoodDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+       // resizeToAvoidBottomPadding: false,
+       resizeToAvoidBottomInset:false,
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
