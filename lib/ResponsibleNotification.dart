@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'LoginORSignup.dart';
-import 'SettingsPage.dart';
-import 'HomePageSeller.dart';
+import 'ResponActivitiesList.dart';
+import 'HomePageResponsible.dart';
+import 'ResponsibleSettings.dart';
 import 'home2.dart';
 
-class NotificationPage extends StatefulWidget {
-  NotificationPageState createState() => NotificationPageState();
+class ResponsibleNotification extends StatefulWidget {
+  ResponsibleNotificationState createState() => ResponsibleNotificationState();
 }
 
-class NotificationPageState extends State<NotificationPage> {
+class ResponsibleNotificationState extends State<ResponsibleNotification> {
   @override
   void initState() {
     super.initState();
@@ -33,10 +33,7 @@ class NotificationPageState extends State<NotificationPage> {
           ),
         ),
         body: Center(
-          child: new Text(
-            "لا يوجد إشعارات حاليا",
-            style: TextStyle(color: Colors.black, fontSize: 25),
-          ),
+          child: new Text("لا توجد إشعارات حاليا"),
         ),
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(
@@ -52,14 +49,15 @@ class NotificationPageState extends State<NotificationPage> {
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new HomePageSeller()))
+                          builder: (context) => new HomePageRes()))
                   : value == 1
                       ? null
                       : value == 2
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => new SettingsPage()))
+                                  builder: (context) =>
+                                      new ResponsibleSettings()))
                           : Navigator.push(
                               context,
                               MaterialPageRoute(

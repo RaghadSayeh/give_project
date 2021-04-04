@@ -130,13 +130,18 @@ class _addnewGoodDetailsState extends State<addnewGoodDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       // resizeToAvoidBottomPadding: false,
-       resizeToAvoidBottomInset:false,
+        // resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
           automaticallyImplyLeading: false,
           centerTitle: true,
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.pink,
           title: new Text(
             "الصفحة الرئيسية",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

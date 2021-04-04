@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:give_project/home2.dart';
 import 'LoginORSignup.dart';
 import 'SellType.dart';
 import 'NotificationPage.dart';
@@ -540,23 +541,6 @@ class SellDetailsState extends State<SellDetails> {
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
-                // ButtonBar(
-                //   alignment: MainAxisAlignment.start,
-                //   children: [
-                //     FlatButton(
-                //       onPressed: () {
-                //         // Perform some action
-                //       },
-                //       child: Icon(Icons.edit),
-                //     ),
-                //     FlatButton(
-                //       onPressed: () {
-                //         // Perform some action
-                //       },
-                //       child: const Text('ACTION 2'),
-                //     ),
-                //   ],
-                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -610,69 +594,81 @@ class SellDetailsState extends State<SellDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      //  resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: new Text(
-          "الصفحة الرئيسية",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: GestureDetector(
-          onTap: () {
-            //addnewGoodDetails
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => new addnewGoodDetails()));
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
+        backgroundColor: Colors.white,
+        //  resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          backgroundColor: Colors.pink,
+          title: new Text(
+            "الصفحة الرئيسية",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          leading: GestureDetector(
+            onTap: () {
+              //addnewGoodDetails
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => new addnewGoodDetails()));
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: _buildList(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        onTap: (value) async {
-          value == 0
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new HomePageSeller()))
-              : value == 1
+        body: _buildList(),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.pink,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 0,
+            onTap: (value) async {
+              value == 0
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new NotificationPage()))
-                  : value == 2
+                          builder: (context) => new HomePageSeller()))
+                  : value == 1
                       ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new SettingsPage()))
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => new LoginORSignup()));
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('الرئيسية'),
+                              builder: (context) => new NotificationPage()))
+                      : value == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new SettingsPage()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new AuthScreen()));
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('الرئيسية'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.notifications),
+                title: new Text('الاشعارات'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), title: Text('الاعدادات')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.notifications),
-            title: new Text('الاشعارات'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('الاعدادات')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
-        ],
-      ),
-    );
+        ));
   }
 }

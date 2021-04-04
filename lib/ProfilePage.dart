@@ -6,6 +6,7 @@ import 'HomePageSeller.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'SellType.dart';
+import 'home2.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
@@ -307,56 +308,68 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: new Text(
-          "الملف الشخصي",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: profileView(),
-      bottomNavigationBar: BottomNavigationBar(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 2,
-        onTap: (value) async {
-          value == 0
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new HomePageSeller()))
-              : value == 1
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          backgroundColor: Colors.pink,
+          title: new Text(
+            "الملف الشخصي",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: profileView(),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.pink,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 2,
+            onTap: (value) async {
+              value == 0
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new NotificationPage()))
-                  : value == 2
+                          builder: (context) => new HomePageSeller()))
+                  : value == 1
                       ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new SettingsPage()))
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => new LoginORSignup()));
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('الرئيسية'),
+                              builder: (context) => new NotificationPage()))
+                      : value == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new SettingsPage()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new AuthScreen()));
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('الرئيسية'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.notifications),
+                title: new Text('الاشعارات'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), title: Text('الاعدادات')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.notifications),
-            title: new Text('الاشعارات'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('الاعدادات')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
-        ],
-      ),
-    );
+        ));
   }
 }

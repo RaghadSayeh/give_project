@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'HomePageSeller.dart';
 import 'SellType.dart';
+import 'HomePageResponsible.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({
@@ -81,8 +82,15 @@ class SignInState extends State<SignIn> {
       print("from static dta");
       print(sellType.sell_type);
 
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => new HomePageSeller()));
+      if (logintype == 'Seller') {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => new HomePageSeller()));
+      } else if (logintype == 'Giver') {
+        //this is for the giver part
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => new HomePageRes()));
+      }
     }
   }
 

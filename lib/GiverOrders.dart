@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'SellType.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:slimy_card/slimy_card.dart';
+import 'home2.dart';
 
 class GiverOrders extends StatefulWidget {
   @override
@@ -236,78 +237,93 @@ class _GiverOrdersState extends State<GiverOrders> {
     final _height = MediaQuery.of(context).size.height;
 
     final body = new Scaffold(
-      appBar: new AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        title: new Text(
-          "أرشيف الطلبات",
-          style: TextStyle(color: Colors.white, fontSize: 22),
+        appBar: new AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: new Text(
+            "أرشيف الطلبات",
+            style: TextStyle(color: Colors.white, fontSize: 22),
+          ),
         ),
-      ),
-      backgroundColor: Colors.transparent,
-      body: ListView.builder(
-          itemCount: HistoryDataList.hd.length,
-          itemBuilder: (context, index) {
-            return new Column(
-              children: [
-                SlimyCard(
-                  color: Colors.cyan[300],
-                  // In topCardWidget below, imagePath changes according to the
-                  // status of the SlimyCard(snapshot.data).
-                  topCardWidget: topCardWidget(
-                      'assets/images/' + images[index],
-                      HistoryDataList.hd[index].responsiblename,
-                      HistoryDataList.hd[index].giverid,
-                      HistoryDataList.hd[index].finalprice,
-                      HistoryDataList.hd[index].orderdate),
-                  bottomCardWidget: bottomCardWidget(
-                      HistoryDataList.hd[index].goodsname,
-                      HistoryDataList.hd[index].goodsprice,
-                      HistoryDataList.hd[index].goodsquan),
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
-            );
-          }),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 2,
-        onTap: (value) async {
-          value == 0
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new HomePageSeller()))
-              : value == 1
+        backgroundColor: Colors.transparent,
+        body: ListView.builder(
+            itemCount: HistoryDataList.hd.length,
+            itemBuilder: (context, index) {
+              return new Column(
+                children: [
+                  SlimyCard(
+                    color: Colors.cyan[300],
+                    // In topCardWidget below, imagePath changes according to the
+                    // status of the SlimyCard(snapshot.data).
+                    topCardWidget: topCardWidget(
+                        'assets/images/' + images[index],
+                        HistoryDataList.hd[index].responsiblename,
+                        HistoryDataList.hd[index].giverid,
+                        HistoryDataList.hd[index].finalprice,
+                        HistoryDataList.hd[index].orderdate),
+                    bottomCardWidget: bottomCardWidget(
+                        HistoryDataList.hd[index].goodsname,
+                        HistoryDataList.hd[index].goodsprice,
+                        HistoryDataList.hd[index].goodsquan),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              );
+            }),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.pink,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 2,
+            onTap: (value) async {
+              value == 0
                   ? Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => new NotificationPage()))
-                  : value == 2
-                      ? null
-                      : Navigator.push(
+                          builder: (context) => new HomePageSeller()))
+                  : value == 1
+                      ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new LoginORSignup()));
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('الرئيسية'),
+                              builder: (context) => new NotificationPage()))
+                      : value == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new SettingsPage()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new AuthScreen()));
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('الرئيسية'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.notifications),
+                title: new Text('الاشعارات'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), title: Text('الاعدادات')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.notifications),
-            title: new Text('الاشعارات'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('الاعدادات')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
-        ],
-      ),
-    );
+        ));
 
     return new Container(
       decoration: new BoxDecoration(
@@ -325,72 +341,3 @@ class _GiverOrdersState extends State<GiverOrders> {
     );
   }
 }
-// class GiverOrders extends StatefulWidget {
-//   _GiverOrdersState createState() => _GiverOrdersState();
-// }
-
-// class _GiverOrdersState extends State<GiverOrders> {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         automaticallyImplyLeading: false,
-//         centerTitle: true,
-//         backgroundColor: Theme.of(context).primaryColor,
-//         title: new Text(
-//           "طلبات المتبرعين",
-//           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-//         ),
-//       ),
-//       body: Container(
-//         child: Column(
-//           children: [],
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavigationBar(
-//         backgroundColor: Colors.white,
-//         type: BottomNavigationBarType.fixed,
-//         currentIndex: 2,
-//         onTap: (value) async {
-//           value == 0
-//               ? Navigator.push(context,
-//                   MaterialPageRoute(builder: (context) => new HomePageSeller()))
-//               : value == 1
-//                   ? Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                           builder: (context) => new NotificationPage()))
-//                   : value == 2
-//                       ? Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) => new SettingsPage()))
-//                       : Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) => new LoginORSignup()));
-//         },
-//         items: [
-//           BottomNavigationBarItem(
-//             icon: new Icon(Icons.home),
-//             title: new Text('الرئيسية'),
-//           ),
-//           BottomNavigationBarItem(
-//             icon: new Icon(Icons.notifications),
-//             title: new Text('الاشعارات'),
-//           ),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.settings), title: Text('الاعدادات')),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
-//         ],
-//       ),
-//     );
-//   }
-// }

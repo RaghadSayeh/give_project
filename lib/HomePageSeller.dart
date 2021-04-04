@@ -10,6 +10,7 @@ import 'GoodsList.dart';
 import 'SellDetails.dart';
 import 'addnewGoodDetails.dart';
 import 'dart:io';
+import 'home2.dart';
 
 class HomePageSeller extends StatefulWidget {
   @override
@@ -175,185 +176,198 @@ class HomePageSellerState extends State<HomePageSeller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: new Text(
-          "الصفحة الرئيسية",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          backgroundColor: Colors.pink,
+          title: new Text(
+            "الصفحة الرئيسية",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-      body: GoodsList.gl.length == 0
-          ? Center(
-              child: new Text(
-              "جاري التحميل",
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ))
-          : Container(
-              padding: EdgeInsets.only(top: 10),
-              color: Colors.white,
-              child: GridView.count(
-                crossAxisCount: 2,
-                children: List.generate(GoodsList.gl.length, (index) {
-                  return GestureDetector(
-                      child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                    margin: EdgeInsets.fromLTRB(10, 2, 10, 5),
-                    padding: EdgeInsets.all(5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5.0, 0, 5, 0),
-                          child: SizedBox(
-                            height: 120,
-                            child: GestureDetector(
-                              onTap: () async {},
-                              child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: new ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
-                                    child: GoodsList.gl[index].pic.length < 8
-                                        ? Image.asset(
-                                            "assets/images/" +
-                                                GoodsList.gl[index].pic
-                                                    .toString() +
-                                                '.jpg',
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.memory(
-                                            base64Decode(
-                                                GoodsList.gl[index].pic),
-                                            fit: BoxFit.cover,
-                                          ),
-                                  )),
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(left: 10.0, top: 5),
-                              child: Text(
-                                GoodsList.gl[index].goodsname,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  //  fontFamily: "palfont",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                ),
+        body: GoodsList.gl.length == 0
+            ? Center(
+                child: new Text(
+                "جاري التحميل",
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ))
+            : Container(
+                padding: EdgeInsets.only(top: 10),
+                color: Colors.white,
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  children: List.generate(GoodsList.gl.length, (index) {
+                    return GestureDetector(
+                        child: Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      margin: EdgeInsets.fromLTRB(10, 2, 10, 5),
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(5.0, 0, 5, 0),
+                            child: SizedBox(
+                              height: 120,
+                              child: GestureDetector(
+                                onTap: () async {},
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: new ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0)),
+                                      child: GoodsList.gl[index].pic.length < 8
+                                          ? Image.asset(
+                                              "assets/images/" +
+                                                  GoodsList.gl[index].pic
+                                                      .toString() +
+                                                  '.jpg',
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.memory(
+                                              base64Decode(
+                                                  GoodsList.gl[index].pic),
+                                              fit: BoxFit.cover,
+                                            ),
+                                    )),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: IconButton(
-                                    icon: new Icon(Icons.delete),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(left: 10.0, top: 5),
+                                child: Text(
+                                  GoodsList.gl[index].goodsname,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    //  fontFamily: "palfont",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
                                     color: Colors.white,
-                                    onPressed: () async {
-                                      askfordelete(
-                                          context,
-                                          GoodsList.gl[index].pic,
-                                          GoodsList.gl[index].goodsname);
-                                    },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: IconButton(
-                                    icon: new Icon(Icons.more_vert),
-                                    color: Colors.white,
-                                    onPressed: () async {
-                                      print("person icon");
-                                      setState(() {
-                                        goToDetails(
-                                            GoodsList.gl[index].goodsname);
-                                      });
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                  height: 30,
-                                  child: IconButton(
-                                    icon: new Icon(Icons.add),
-                                    color: Colors.white,
-                                    onPressed: () async {
-                                      print("person icon");
-                                      setState(() {
-                                        sellType.goodsName =
-                                            GoodsList.gl[index].goodsname;
-                                        print(
-                                            "add new goods detail from home page");
-                                        print(sellType.goodsName);
-                                        Navigator.push(
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: IconButton(
+                                      icon: new Icon(Icons.delete),
+                                      color: Colors.white,
+                                      onPressed: () async {
+                                        askfordelete(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    new addnewGoodDetails()));
-                                      });
-                                    },
+                                            GoodsList.gl[index].pic,
+                                            GoodsList.gl[index].goodsname);
+                                      },
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ));
-                }),
-              )),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        onTap: (value) async {
-          value == 1
-              ? Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => new NotificationPage()))
-              : value == 2
-                  ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => new SettingsPage()))
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => new LoginORSignup()));
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('الرئيسية'),
+                                  SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: IconButton(
+                                      icon: new Icon(Icons.more_vert),
+                                      color: Colors.white,
+                                      onPressed: () async {
+                                        print("person icon");
+                                        setState(() {
+                                          goToDetails(
+                                              GoodsList.gl[index].goodsname);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: IconButton(
+                                      icon: new Icon(Icons.add),
+                                      color: Colors.white,
+                                      onPressed: () async {
+                                        print("person icon");
+                                        setState(() {
+                                          sellType.goodsName =
+                                              GoodsList.gl[index].goodsname;
+                                          print(
+                                              "add new goods detail from home page");
+                                          print(sellType.goodsName);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      new addnewGoodDetails()));
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ));
+                  }),
+                )),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
           ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.notifications),
-            title: new Text('الاشعارات'),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.pink,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 0,
+            onTap: (value) async {
+              value == 0
+                  ? null
+                  : value == 1
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new NotificationPage()))
+                      : value == 2
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new SettingsPage()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new AuthScreen()));
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.home),
+                title: new Text('الرئيسية'),
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(Icons.notifications),
+                title: new Text('الاشعارات'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), title: Text('الاعدادات')),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
+            ],
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), title: Text('الاعدادات')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.logout), title: Text('تسجيل الخروج'))
-        ],
-      ),
-    );
+        ));
   }
 }

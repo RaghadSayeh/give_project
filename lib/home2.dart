@@ -1,11 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:lit_firebase_auth/lit_firebase_auth.dart';
-import 'palette.dart';
 import 'register.dart';
 import 'sign_in.dart';
-//import 'package:lit_firebase_ui_demo/screens/home.dart';
 
 import 'background_painter.dart';
 
