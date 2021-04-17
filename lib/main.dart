@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'LoginORSignup.dart';
 import 'package:flutter/services.dart';
 import 'home2.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() {
   runApp(new MyApp());

@@ -3,7 +3,11 @@ import 'ResponActivitiesList.dart';
 import 'HomePageResponsible.dart';
 import 'home2.dart';
 import 'ResponsibleNotification.dart';
-
+import 'ResponDataModification.dart';
+import 'ResponsibleContactus.dart';
+import 'addNewEmployee.dart';
+import 'addNewDonate.dart';
+import 'addNewChild.dart';
 class ResponsibleSettings extends StatefulWidget {
   ResponsibleSettingsState createState() => ResponsibleSettingsState();
 }
@@ -75,34 +79,60 @@ class ResponsibleSettingsState extends State<ResponsibleSettings> {
                                         color: Colors.pink, size: 20))),
                           ),
                         ),
-                        //              Container(
-                        //   margin: EdgeInsets.all(20),
-                        //   padding: EdgeInsets.all(10),
-                        //   decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(100),
-                        //       border: Border.all(width: 2, color: Colors.white)),
-                        //   child: Icon(
-                        //     Icons.cancel,
-                        //     color: Colors.white,
-                        //   ),
-                        // )
                       ),
-
-                      //  ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                            padding:
-                                EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
-                            child: Text(
-                              settings[index],
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                //  fontFamily: "palfont",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: Colors.black,
+                          GestureDetector(
+                            onTap: () {
+                              if (index == 0) {
+                                 Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new addNewChild()));
+                              } else if (index == 1) {
+                              } else if (index == 2) {
+                              } else if (index == 3) {
+                              } else if (index == 4) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new addNewDonate()));
+                              } else if (index == 5) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new addNewEmployee()));
+                              } else if (index == 6) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new ResponDataModif()));
+                              } else if (index == 7) {
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new ResponsibleContact()));
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 10.0, top: 5, bottom: 5),
+                              child: Text(
+                                settings[index],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  //  fontFamily: "palfont",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
