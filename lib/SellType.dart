@@ -6,4 +6,6 @@ class sellType {
   static String phoneno = "";
   static String otherinfo = "";
   static String goodsName = "";
+  static String name = "";
+  // static String login_type = "";
 }

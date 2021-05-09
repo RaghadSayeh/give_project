@@ -43,6 +43,12 @@ dependencies:
   show_up_animation: ^1.0.4
   onesignal_flutter: ^2.6.3
   flutter_custom_clippers: ^1.1.2
+  animated_background: ^1.0.5
+  polygon_clipper: ^1.0.2
+  shared_preferences: ^0.5.10
+
+
+
 
 
 
